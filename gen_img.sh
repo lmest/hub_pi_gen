@@ -5,12 +5,12 @@ if [ -z "$1" ]; then
   exit 1
 fi
 
-VER="$1"
+export RELEASE_INFO="$1"
 
 # config file
 cat <<EOF > ./pi-gen/config
-IMG_NAME=hub
-PI_GEN_RELEASE="UFU-PETROBRAS $VER"
+IMG_NAME="hub"
+#PI_GEN_RELEASE="UFU-PETROBRAS $VER"
 KEYBOARD_KEYMAP="us"
 KEYBOARD_LAYOUT="English (US)"
 TIMEZONE_DEFAULT="America/Sao_Paulo"
@@ -28,6 +28,6 @@ touch ./pi-gen/stage4/SKIP_IMAGES ./pi-gen/stage5/SKIP_IMAGES
 # add custom files
 cp -a custom/04-custom ./pi-gen/stage2/
 
-(cd pi-gen ; CLEAN=1 ./build.sh)
+(cd pi-gen ; ./build.sh)
 
 
