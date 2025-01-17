@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Wi-Fi Settings</title>
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/style.css') }}"/>
+    <script type="text/javascript">
+      window.onload = function() {
+          document.getElementById('ident_label').style.display = 'none';
+          document.getElementById('ident_txtbox').style.display = 'none';
+      }
+  
+      function Check() {
+          if (document.getElementById('enterprise').checked) {
+              document.getElementById('ident_label').style.display = 'block';
+              document.getElementById('ident_txtbox').style.display = 'block';
+
+          } 
+          else {
+              document.getElementById('ident_label').style.display = 'none';
+              document.getElementById('ident_txtbox').style.display = 'none';
+
+          }
+      }  
+    </script>
+  </head>
+  <body>
+    <div class="wifi_container">
+      <center>
+        <br/>
+        <h1>Set new Wi-Fi credentials:</h1>
+        <br/>
+        <form method="post">
+          <table>
+            <tr>
+              <input type="radio"
+                     id="personal"
+                     name="wifi"
+                     value="personal"
+                     onclick="Check();"
+                     checked/>
+              <label for="personal">Personal</label>
+              <input type="radio"
+                     id="enterprise"
+                     name="wifi"
+                     value="enterprise"
+                     onclick="Check();"/>
+              <label for="enterprise">Enterprise</label>
+            </tr>
+            <tr>
+              <td class="login_td">Network:</td>
+              <td class="login_td">
+                <input class="box" type="text" name="ssid"/>
+              </td>
+            </tr>
+            <tr>
+              <td class="login_td" id="ident_label">Identity:</td>
+              <td class="login_td">
+                <input class="box" type="username" name="ident" id="ident_txtbox"/>
+              </td>
+            </tr>
+            <tr>
+              <td class="login_td">Password:</td>
+              <td class="login_td">
+                <input class="box" type="password" name="pwd"/>
+              </td>
+            </tr>
+          </table>
+          <br/>
+          <input class="button" type="submit" value="Save"/>
+        </form>
+        {% if error %}
+          <p class="error">
+            <strong>Error:</strong> {{ error }}
+        {% endif %}
+        {% for message in get_flashed_messages()%}
+            {{ message }}
+        {% endfor %}
+        </center>
+      </div>
+    </body>
+  </html>
