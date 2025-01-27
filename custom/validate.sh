@@ -14,4 +14,4 @@ mkdir -p /home/marcelo/temp/rootfs
 export STAGE_WORK_DIR=/home/marcelo/temp/work
 export ROOTFS_DIR=/home/marcelo/temp/rootfs
 
-(cd ../hub_pi_gen/custom/04-custom; ./run.sh)
+(cd ../hub_pi_gen/custom/04-custom; ./02-run.sh)
