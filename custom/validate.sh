@@ -5,13 +5,14 @@ log() {
 }
 
 export -f log
+usr_dir=/home/$USER
 
-rm -fR /home/marcelo/temp/work
-mkdir -p /home/marcelo/temp/work
-rm -fR /home/marcelo/temp/rootfs
-mkdir -p /home/marcelo/temp/rootfs
+rm -fR $usr_dir/temp/work
+mkdir -p $usr_dir/temp/work
+rm -fR $usr_dir/temp/rootfs
+mkdir -p $usr_dir/temp/rootfs
 
-export STAGE_WORK_DIR=/home/marcelo/temp/work
-export ROOTFS_DIR=/home/marcelo/temp/rootfs
+export STAGE_WORK_DIR=$usr_dir/temp/work
+export ROOTFS_DIR=$usr_dir/temp/rootfs
 
-(cd ../hub_pi_gen/custom/04-custom; ./02-run.sh)
+(cd ./custom/04-custom; ./02-run.sh)
