@@ -42,7 +42,7 @@ on_chroot << EOF
 unzip /tmp/zeromq-4.3.5.zip -d /tmp
 (cd /tmp/zeromq-4.3.5/ ; ./autogen.sh)
 (cd /tmp/zeromq-4.3.5/ ; ./configure --enable-static --host=arm-linux-gnueabihf CC=arm-linux-gnueabihf-gcc CXX=arm-linux-gnueabihf-g++ --prefix="/")
-(cd /tmp/zeromq-4.3.5/ ; make)
+(cd /tmp/zeromq-4.3.5/ ; make -j8)
 (cd /tmp/zeromq-4.3.5/ ; make install)
 EOF
 
