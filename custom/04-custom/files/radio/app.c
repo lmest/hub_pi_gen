@@ -79,8 +79,8 @@ void app_rx_cbk(uint8_t *buffer, PHY_Frame_Header_Fields_t frame_header) //New s
 {
 	if(frame_header.dst_addr != 0xFFFF)
 	{
-		app_cmng_filter_out(buffer, frame_header.size, frame_header.src_addr, frame_header.ed);
-		led_msg_recv = LED_GPIO_ON;		
+		app_cmng_filter_out(buffer, frame_header.size, frame_header.src_addr);
+		led_msg_recv = LED_GPIO_ON;
 		rx_data = true;
 	}
 }
