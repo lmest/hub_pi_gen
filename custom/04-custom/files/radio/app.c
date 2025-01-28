@@ -56,7 +56,7 @@ void app_init_config(rf_config_t *conf)
 	//conf->channel = RF_CHANNEL_2480MHz;
 	//conf->pan_id = 0x1234;
 	conf->data_rate = RF_DR_250kbps;
-	conf->addr = 0x0B;	
+	conf->addr = 0x0B;
 	conf->max_frame_retries = 10;
 	conf->max_csma_retries = 3;
 	conf->ack_time = ACK_2_SYM;
@@ -97,32 +97,32 @@ void app_radio_fail_cbk(rf_error_t fail)
 void hw_init(void)
 {
 	gpioTerminate();
-	
+
 	if (gpioInitialise() < 0)
 		app_rasp_restart();
 
 	if (rpi_open_spi(4000000) < 0)
-		app_rasp_restart();	
+		app_rasp_restart();
 
 	if(hw_set_gpio_input(AT86_9_IRQ_GPIO) < 0)
-		app_rasp_restart();	
+		app_rasp_restart();
 
 	if (hw_set_resistor_pull_off(AT86_9_IRQ_GPIO) == 0)
 		printf("| Pull up resistor for radio interruption set!\n|\n");
-  
-	if (gpioSetISRFunc(AT86_9_IRQ_GPIO, FALLING_EDGE, 10, rpi_at86_interrupt) == 0)
-		printf("| GPIO change state callback set!\n|\n");	
 
-	if (hw_set_gpio_output(RPI_LED3_GPIO< 0))
+	if (gpioSetISRFunc(AT86_9_IRQ_GPIO, FALLING_EDGE, 10, rpi_at86_interrupt) == 0)
+		printf("| GPIO change state callback set!\n|\n");
+
+	if (hw_set_gpio_output(RPI_LED3_GPIO) < 0)
 		app_rasp_restart();
-	if (hw_set_gpio_output(RPI_LED2_GPIO< 0))
+	if (hw_set_gpio_output(RPI_LED2_GPIO) < 0)
 		app_rasp_restart();
-	if (hw_set_gpio_output(RPI_LED1_GPIO< 0))
+	if (hw_set_gpio_output(RPI_LED1_GPIO) < 0)
 		app_rasp_restart();
-		
+
 	rpi_gpio_on(RPI_LED3_GPIO);
 	rpi_gpio_off(RPI_LED2_GPIO);
-	rpi_gpio_off(RPI_LED1_GPIO);	
+	rpi_gpio_off(RPI_LED1_GPIO);
 }
 
 static int file_handler(void* user, const char* section, const char* name, const char* value)
