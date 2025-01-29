@@ -11,7 +11,7 @@ on_chroot << EOF
 EOF
 
 log "Updating version info..."
-echo "${RELEASE_INFO}" > files/etc/release.info"
+echo "${RELEASE_INFO}" > files/rpi/etc/release.info
 
 log "Copying file system..."
 rsync -av --progress files/rpi/ "${ROOTFS_DIR}/"
