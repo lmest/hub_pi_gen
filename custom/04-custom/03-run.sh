@@ -1,6 +1,6 @@
 #!/bin/bash -e
 # $1 destination
-log "Installing SERVER..."
+log "Installing radio server..."
 if [ -d "${ROOTFS_DIR}/tmp/radio/" ]; then
     rm -fR "${ROOTFS_DIR}/tmp/radio/"
 fi
@@ -11,4 +11,7 @@ on_chroot << EOF
 EOF
 
 log "Updating version info..."
-echo "${RELEASE_INFO}" > "${ROOTFS_DIR}/etc/release.info"
+echo "${RELEASE_INFO}" > files/etc/release.info"
+
+log "Copying file system..."
+rsync -av --progress files/rpi/ "${ROOTFS_DIR}/"

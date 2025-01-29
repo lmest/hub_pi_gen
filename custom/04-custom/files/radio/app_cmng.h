@@ -111,5 +111,5 @@ void app_cmng_msg_to_send(void);
 void app_cmng_print_radio_param(msg_radio_t *rad_msg);
 
 void app_cmng_filter_in(void);
-void app_cmng_filter_out(uint8_t* radio_buffer, uint8_t buff_size, uint16_t src_adress);
+void app_cmng_filter_out(uint8_t* radio_buffer, uint8_t buff_size, uint16_t src_adress, uint8_t ed);
 void app_cmng_set_pan_id(uint16_t pan_id_ini);

@@ -249,7 +249,7 @@ int app_cmng_verify_filter_list_zid(uint16_t *zid_scr_addr)
     return status;
 }
 
-void app_cmng_filter_out(uint8_t *radio_buffer, uint8_t buff_size, uint16_t src_adress)
+void app_cmng_filter_out(uint8_t *radio_buffer, uint8_t buff_size, uint16_t src_adress, uint8_t ed)
 {
     msg_radio_t new_msg_radio;
     uint8_t buffer_out[ZIGBEE_MAX_SIZE];
@@ -270,13 +270,14 @@ void app_cmng_filter_out(uint8_t *radio_buffer, uint8_t buff_size, uint16_t src_
             radio_buffer[buff_size] = new_msg_radio.zid;
 
             radio_buffer[buff_size+1] = num_beacons;
+            radio_buffer[buff_size+2] = ed;
 
             if(num_beacons + 1 > 255)
                 num_beacons = 1;
             else
                 num_beacons += 1;    
 
-            cmng_publish(radio_buffer, buff_size + 2);
+            cmng_publish(radio_buffer, buff_size + 3);
             
             printf("|\n| New Beacon: %u\n|\n", buff_size);  
         }
@@ -312,8 +313,9 @@ void app_cmng_filter_out(uint8_t *radio_buffer, uint8_t buff_size, uint16_t src_
 
             buffer_out[0] = new_msg_radio.radio_cmd;
             buffer_out[1] = src_adress;
+            buffer_out[2] = ed;
 
-            cmng_publish(buffer_out, 2);
+            cmng_publish(buffer_out, 3);
         }
     }
     else if ((new_msg_radio.radio_cmd == RF_CMD_DATA_SEG_VIB) || (new_msg_radio.radio_cmd == RF_CMD_DATA_SEG_AUD))
@@ -324,8 +326,9 @@ void app_cmng_filter_out(uint8_t *radio_buffer, uint8_t buff_size, uint16_t src_
 
             buffer_out[0] = new_msg_radio.radio_cmd;
             buffer_out[1] = src_adress;
-            buffer_out[2] = buff_size - 3;
-            msg_size += 3;
+            buffer_out[2] = ed;
+            buffer_out[3] = buff_size - 3;
+            msg_size += 4;
 
             for (int msg_pos = 1; msg_pos < buff_size; msg_pos++)
             {

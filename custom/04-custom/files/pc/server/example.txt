@@ -1,3 +1,0 @@
--- Requisição de PanId Config
-
-{"__instance_type__": ["smccedfw.amqp_publish", "SensorPanIdConfig"], "attributes": {"channel": 10, "panid": 10}}
