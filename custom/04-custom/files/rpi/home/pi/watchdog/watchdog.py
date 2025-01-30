@@ -53,7 +53,10 @@ class ProcessWatcher:
         self.logs_name = {"Server": "screen_server.log", "Radio": "screen_radio.log", 
                           "Watchdog": "watchdog.log", "IpConfig": "screen_ipconfig.log",
                           "Web": "screen_web.log"}
-
+        
+        for k in self.logs_name:
+            if not os.path.exists(self.logs_name[k]):
+                open(self.logs_name[k],"+at")
 
         
     def init_proccess_wtd(self):

@@ -4,7 +4,7 @@ log "Installing radio server..."
 if [ -d "${ROOTFS_DIR}/tmp/radio/" ]; then
     rm -fR "${ROOTFS_DIR}/tmp/radio/"
 fi
-cp -a files/radio "${ROOTFS_DIR}/tmp/"
+cp -a files/rpi/home/pi/radio "${ROOTFS_DIR}/tmp/"
 on_chroot << EOF
 (cd /tmp/radio/ ; make CROSS_PREFIX=arm-linux-gnueabihf- ROOTFS_DIR="/")
 (cd /tmp/radio/ ; make CROSS_PREFIX=arm-linux-gnueabihf- ROOTFS_DIR="/" install)
