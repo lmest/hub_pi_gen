@@ -1,11 +1,12 @@
 #!/bin/bash
 
-if [ -z "$1" ]; then
-  echo "Uso: $0 versao"
+if [ -z "$1" ] || [ -z "$2" ]; then
+  echo "Uso: $0 [lte|wifi] version_tag"
   exit 1
 fi
 
-export RELEASE_INFO="$1"
+export IMAGE_TYPE="$1"
+export RELEASE_INFO="$2"
 
 # config file
 cat <<EOF > ./pi-gen/config

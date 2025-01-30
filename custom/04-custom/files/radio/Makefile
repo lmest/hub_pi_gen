@@ -24,7 +24,7 @@ clean:
 	-rm $(OBJ) $(TARGET)
 
 install: $(TARGET)
-	install -m 0755 $(TARGET) /bin/
+	install -D -m 0755 $(TARGET) /home/pi/radio/$(TARGET)
 
 .PHONY: all install
 

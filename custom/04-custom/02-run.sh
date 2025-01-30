@@ -5,18 +5,8 @@ log "Instaling python dependencies"
 
 on_chroot << EOF
 
-apt-get install -y python3 python3-pip
-
-#pip install pyzmq==25.0.0
-#pip install pytz==2019.3
-#pip install json-tricks==3.14.0
-#pip install pika==1.1.0
-#pip install numpy==1.18.1
-#pip install multitimer==0.3
-#pip install flask==2.2.2
-#pip install serial==3.5
-#pip install retry==0.9.2
-
+apt-get install -y python3 python3-pip python3-zmq python3-tz python3-json-tricks python3-pika 
+apt-get install -y python3-numpy python3-flask python3-serial python3-retry 
 apt-get install -y libatlas-base-dev rabbitmq-server screen mc
 apt-get install -y gcc-arm-linux-gnueabihf g++-arm-linux-gnueabihf build-essential libtool pkg-config make
 
@@ -46,3 +36,12 @@ unzip /tmp/zeromq-4.3.5.zip -d /tmp
 (cd /tmp/zeromq-4.3.5/ ; make install)
 EOF
 
+log "Installing Multitimer..."
+if [ -d "${ROOTFS_DIR}/tmp/multitimer-master/" ]; then
+    rm -fR "${ROOTFS_DIR}/tmp/multitimer-master/"
+fi
+cp files/multitimer-master.zip "${ROOTFS_DIR}/tmp/"
+on_chroot << EOF
+unzip /tmp/multitimer-master.zip -d /tmp
+(cd /tmp/multitimer-master/ ; python3 setup.py install)
+EOF
