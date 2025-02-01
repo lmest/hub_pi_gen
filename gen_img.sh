@@ -8,6 +8,11 @@ fi
 export IMAGE_TYPE="$1"
 export RELEASE_INFO="$2"
 
+if [ $IMAGE_TYPE != "lte" ] && [ $IMAGE_TYPE != "wifi" ]; then
+  echo "Uso: $0 [lte|wifi] version_tag"
+  exit 1
+fi
+
 # config file
 cat <<EOF > ./pi-gen/config
 IMG_NAME="hub"

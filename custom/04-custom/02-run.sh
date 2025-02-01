@@ -46,12 +46,14 @@ unzip /tmp/multitimer-master.zip -d /tmp
 (cd /tmp/multitimer-master/ ; python3 setup.py install)
 EOF
 
-log "Installing Sixfab PPP support..."
-if [ -d "${ROOTFS_DIR}/tmp/Sixfab_PPP_Installer/" ]; then
-    rm -fR "${ROOTFS_DIR}/tmp/Sixfab_PPP_Installer/"
+if [ ${IMAGE_TYPE} = "lte" ]; then
+    log "Installing Sixfab PPP support..."
+    if [ -d "${ROOTFS_DIR}/tmp/Sixfab_PPP_Installer/" ]; then
+        rm -fR "${ROOTFS_DIR}/tmp/Sixfab_PPP_Installer/"
+    fi
+    cp files/Sixfab_PPP_Installer.zip "${ROOTFS_DIR}/tmp/"
+    on_chroot << EOF
+    unzip /tmp/Sixfab_PPP_Installer.zip -d /tmp
+    (cd /tmp/Sixfab_PPP_Installer/ ; chmod +x ppp_install.sh ; ./ppp_install.sh)
+    EOF
 fi
-cp files/Sixfab_PPP_Installer.zip "${ROOTFS_DIR}/tmp/"
-on_chroot << EOF
-unzip /tmp/Sixfab_PPP_Installer.zip -d /tmp
-(cd /tmp/Sixfab_PPP_Installer/ ; chmod +x ppp_install.sh ; ./ppp_install.sh)
-EOF
