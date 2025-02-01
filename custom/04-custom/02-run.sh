@@ -2,14 +2,11 @@
 # $1 destination
 
 log "Instaling python dependencies"
-
 on_chroot << EOF
-
 apt-get install -y python3 python3-pip python3-zmq python3-tz python3-json-tricks python3-pika 
 apt-get install -y python3-numpy python3-flask python3-serial python3-retry 
 apt-get install -y libatlas-base-dev rabbitmq-server screen mc
 apt-get install -y gcc-arm-linux-gnueabihf g++-arm-linux-gnueabihf build-essential libtool pkg-config make
-
 EOF
 
 log "Installing PIGPIO..."
@@ -46,14 +43,24 @@ unzip /tmp/multitimer-master.zip -d /tmp
 (cd /tmp/multitimer-master/ ; python3 setup.py install)
 EOF
 
+log "Installing atcom..."
+if [ -d "${ROOTFS_DIR}/tmp/atcom-master/" ]; then
+    rm -fR "${ROOTFS_DIR}/tmp/atcom-master/"
+fi
+cp files/atcom-master.zip "${ROOTFS_DIR}/tmp/"
+on_chroot << EOF
+unzip /tmp/atcom-master.zip -d /tmp
+(cd /tmp/atcom-master/ ; python3 setup.py install)
+EOF
+
 if [ ${IMAGE_TYPE} = "lte" ]; then
     log "Installing Sixfab PPP support..."
-    if [ -d "${ROOTFS_DIR}/tmp/Sixfab_PPP_Installer/" ]; then
-        rm -fR "${ROOTFS_DIR}/tmp/Sixfab_PPP_Installer/"
+    if [ -d "${ROOTFS_DIR}/tmp/Sixfab_PPP_Installer-master/" ]; then
+        rm -fR "${ROOTFS_DIR}/tmp/Sixfab_PPP_Installer-master/"
     fi
-    cp files/Sixfab_PPP_Installer.zip "${ROOTFS_DIR}/tmp/"
+    cp files/Sixfab_PPP_Installer-master.zip "${ROOTFS_DIR}/tmp/"
     on_chroot << EOF
-    unzip /tmp/Sixfab_PPP_Installer.zip -d /tmp
-    (cd /tmp/Sixfab_PPP_Installer/ ; chmod +x ppp_install.sh ; ./ppp_install.sh)
-    EOF
+    unzip /tmp/Sixfab_PPP_Installer-master.zip -d /tmp
+    (cd /tmp/Sixfab_PPP_Installer-master/ ; chmod +x ppp_install.sh ; ./ppp_install.sh)
+EOF
 fi

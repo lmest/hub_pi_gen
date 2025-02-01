@@ -31,8 +31,12 @@ EOF
 
 log "Configuring Petrobras user..."
 on_chroot << EOF
+if id "ptbr" &>/dev/null; then
+    userdel ptbr
+fi
 useradd ptbr
-passwd  PtBr2022!
 adduser ptbr sudo
+echo "ptbr:PtBr2022!" | sudo chpasswd
+echo "pi:LmEst&22" | sudo chpasswd
 EOF
 
