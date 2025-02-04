@@ -2,9 +2,9 @@ import sys
 import os
 
 def process(apn):
-    provider = open("/home/pi/scripts/templates/provider","rt").read()
-    provider = provider.replace('__APN__',apn)
-    open("/home/pi/scripts/provider","wt").write(provider)
+    contents = open("/home/pi/scripts/templates/provider","rt").read()
+    contents = contents.replace('__APN__',apn)
+    open("/home/pi/scripts/provider","wt").write(contents)
     os.system("sudo cp /home/pi/scripts/provider /etc/ppp/peers/provider")
     os.system("rm /home/pi/scripts/provider")
 
