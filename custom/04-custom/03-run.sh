@@ -16,8 +16,8 @@ echo "${IMAGE_TYPE} ${RELEASE_INFO}" > files/rpi/etc/release.info
 log "Copying file system..."
 rsync -av --progress files/rpi/ "${ROOTFS_DIR}/"
 
-cp "files/conf/${IMAGE_TYPE}/wpa_supplicant.conf" "${ROOTFS_DIR}/etc/wpa_supplicant/"
-chmod 600 "${ROOTFS_DIR}/etc/wpa_supplicant/"
+cp "files/rpi/home/pi/scripts/conf/${IMAGE_TYPE}/wpa_supplicant.conf" "${ROOTFS_DIR}/etc/wpa_supplicant/"
+chmod 600 "${ROOTFS_DIR}/etc/wpa_supplicant/wpa_supplicant.conf"
 chown root:root "${ROOTFS_DIR}/etc/wpa_supplicant/wpa_supplicant.conf"
 
 log "Configuring AMQP..."
