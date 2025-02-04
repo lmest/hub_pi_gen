@@ -7,6 +7,7 @@ from logging_conf import *
 import web_interface 
 from subprocess import check_output
 from read_config_ini import ConfigIni
+import os_mng
 
 class GetRSSI():
     def __init__(self):
@@ -18,16 +19,23 @@ class GetRSSI():
         self.hub_restart_cnt = 0
         self.lte_status = 0
         self.lte_ip = -1
+        self.connected = False
                 
     def connect_serial(self,):
         try:
             self.serial = Serial(port='/dev/ttyUSB2', baudrate=115200, bytesize=8, parity='N', stopbits=1, timeout=1)
+            self.connected = True
         except Exception as e:
             logging.warning("Serial connection warning: {}".format(e))
 
     def tx_at_command(self, cname):
         try:
-            cmd_dic = {"rssi": "AT+CSQ\r", "reset": "AT+CFUN=1,1\r", "status": "AT+CREG?\r", "ip" : "AT+CGPADDR=1\r"}
+            cmd_dic = {"rssi": "AT+CSQ\r", 
+                       "reset": "AT+CFUN=1,1\r", 
+                       "status": "AT+CREG?\r", 
+                       "ip" : "AT+CGPADDR=1\r", 
+                       "offline":"AT+CFUN=4,0\r",
+                       "online":"AT+CFUN=1,1\r"}
             cmd=cmd_dic[cname]
             self.serial.write(cmd.encode())
         except Exception as e:
@@ -51,6 +59,8 @@ class GetRSSI():
                     return self.read_status(str(msg))
                 elif b'CGPADDR' in msg:
                     return self.read_ip(str(msg))
+                else:
+                    return True
         return False 
 
     def read_ip(self,msg):
@@ -112,7 +122,8 @@ class GetRSSI():
         
     def close_serial(self):
         self.serial.close()    
-        
+        self.connected = False
+
     def get_interface(self):
         try:
             self.net_interface = ConfigIni().get_ipconfig_net_dev()
@@ -129,7 +140,7 @@ class GetRSSI():
             self.lte_restart_cnt = 0
             self.serial.close()
             time.sleep(30)
-            os.system("sudo shutdown -r now") 
+            os_mng.reboot_system()
 
     def lte_ip_valid(self):
         try:
@@ -183,6 +194,27 @@ class GetRSSI():
             logging.warning("Error reading rssi: {}".format(e)) 
             web_interface.update_web_rssi(0)
 
+    def set_modem_online_state(self,state):
+        # Put modem in online or offline modes
+        self.get_interface()
+        # only available when LTE is active
+        if "ppp" in self.net_interface: 
+            # try to use the serial port
+            num_retries = 5
+            while self.connected and num_retries > 0:
+                time.sleep(1)
+                num_retries = num_retries -1
+
+            if not self.connected:
+                cmd = 'online' if state else 'offline'
+                logging.debug(f"| ---- Putting in {cmd} mode ---- |")
+                self.connect_serial()
+                self.tx_at_command(cmd)   
+                time.sleep(1)
+                self.rx_at_command()
+                self.close_serial()
+            else:
+                logging.debug(f"| ---- Serial port busy, modem state set failured ---- |")
            
     def start(self):
         self.get_interface()

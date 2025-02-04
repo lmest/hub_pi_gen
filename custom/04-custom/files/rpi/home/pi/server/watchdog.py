@@ -4,6 +4,7 @@ import sys
 import time
 import os
 from subprocess import check_output
+import os_mng
 
 STATUS_INIT = 0
 STATUS_RUNNING= 1
@@ -18,7 +19,6 @@ logging.basicConfig(
     ],
     datefmt='%d-%b-%y %H:%M:%S'
 )
-
 
 class ProcessWatcher:
     def __init__(self, max_restart, max_log_size_mb):
@@ -83,7 +83,7 @@ class ProcessWatcher:
         logging.warning("| Restart Limit Reached!")
         logging.warning("| Rebooting System")
         time.sleep(20)
-        os.system("sudo shutdown -r now")
+        os_mng.reboot_system()
            
     def open_process(self, process_key):     
         subprocess.Popen(self.process_var[process_key]['process_command'], shell=True) 

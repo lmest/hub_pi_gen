@@ -1,0 +1,9 @@
+# /etc/chatscripts/chat-disconnect
+ABORT "ERROR"
+ABORT "NO DIALTONE"
+SAY "\nSending break to the modem\n"
+""  +++
+""  +++
+""  +++
+AT CFUN=4,0
+SAY "\nGoodbye\n"

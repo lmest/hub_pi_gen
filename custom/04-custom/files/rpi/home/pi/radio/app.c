@@ -28,6 +28,15 @@
 #define INVALID_FILE_PARAMETER -1
 #define MAX_FILE_LINE_CHAR 128
 
+typedef enum app_reset_reason_e
+{
+	APP_RESET_NONE = 0,
+	APP_RESET_PIGPIO_INIT_ERROR,
+	APP_SPI_INIT_ERROR,
+	APP_PIGPIO_CFG_ERROR,
+	APP_TIMER_INIT_ERROR,
+} app_reset_reason_t;
+
 typedef struct hub_configuration_s
 {
     uint16_t channel;
@@ -44,9 +53,10 @@ uint8_t end_prog;
 extern volatile uint8_t led_msg_recv;
 volatile bool rx_data = false;
 
-void app_rasp_restart()
+void app_rasp_restart(app_reset_reason_t reason)
 {
-	printf("|\n| Hardware Init Fail | Restarting System...\n");
+	printf("|\n| Hardware Init Fail (reason %d) |\n",(unsigned int) reason);
+	printf("|\n| Restarting System...\n");
 	printf("|***********************************************************************\n\n");
 	system("sudo shutdown -r now");
 }
@@ -99,13 +109,13 @@ void hw_init(void)
 	gpioTerminate();
 
 	if (gpioInitialise() < 0)
-		app_rasp_restart();
+		app_rasp_restart(APP_RESET_PIGPIO_INIT_ERROR);
 
 	if (rpi_open_spi(4000000) < 0)
-		app_rasp_restart();
+		app_rasp_restart(APP_SPI_INIT_ERROR);
 
 	if(hw_set_gpio_input(AT86_9_IRQ_GPIO) < 0)
-		app_rasp_restart();
+		app_rasp_restart(APP_PIGPIO_CFG_ERROR);
 
 	if (hw_set_resistor_pull_off(AT86_9_IRQ_GPIO) == 0)
 		printf("| Pull up resistor for radio interruption set!\n|\n");
@@ -114,11 +124,11 @@ void hw_init(void)
 		printf("| GPIO change state callback set!\n|\n");
 
 	if (hw_set_gpio_output(RPI_LED3_GPIO) < 0)
-		app_rasp_restart();
+		app_rasp_restart(APP_PIGPIO_CFG_ERROR);
 	if (hw_set_gpio_output(RPI_LED2_GPIO) < 0)
-		app_rasp_restart();
+		app_rasp_restart(APP_PIGPIO_CFG_ERROR);
 	if (hw_set_gpio_output(RPI_LED1_GPIO) < 0)
-		app_rasp_restart();
+		app_rasp_restart(APP_PIGPIO_CFG_ERROR);
 
 	rpi_gpio_on(RPI_LED3_GPIO);
 	rpi_gpio_off(RPI_LED2_GPIO);
@@ -194,7 +204,7 @@ void app_radio_init(void)
 	else
 	{
 		printf("| Timers init error!\n|\n");
-		app_rasp_restart();
+		app_rasp_restart(APP_TIMER_INIT_ERROR);
 	}
 
     app_init_config(&radio_config); 

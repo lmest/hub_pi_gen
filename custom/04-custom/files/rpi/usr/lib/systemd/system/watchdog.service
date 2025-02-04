@@ -4,7 +4,7 @@ After=multi-user.target
 
 [Service]
 Type=forking
-ExecStart=/usr/bin/screen -dmS watchdog sudo -E python3 /home/pi/watchdog/watchdog.py
+ExecStart=/usr/bin/screen -dmS watchdog sudo -E python3 /home/pi/server/watchdog.py
 Restart=always
 User=pi
 TimeoutStopSec=5

@@ -236,13 +236,19 @@ void hw_timer_restar_app(void)
 
 	if (minutes_restart >= max_wait_time_reset)
 	{
+		// This mechanism is not used anymore as it has a side effect where hubs starts to restart
+		// when we do not have any sensor near it. The python code will handle resets due to 
+		// communication failure.
+
+		#if 0
 		rpi_gpio_on(RPI_LED1_GPIO);
 		rpi_gpio_off(RPI_LED2_GPIO);
 		rpi_gpio_off(RPI_LED3_GPIO);
 
 		printf("|\n| Communication Error: Hub shutting down raspberry...\n");
 		printf("|***********************************************************************\n\n");
-		//system("sudo shutdown -r now");
+		system("sudo shutdown -r now");
+		#endif
 	}
 }
 
