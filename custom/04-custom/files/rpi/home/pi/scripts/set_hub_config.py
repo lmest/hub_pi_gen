@@ -11,6 +11,7 @@ def process(channel,pan_id,server,port,net_dev,hub_id):
     open("/home/pi/hub_config.ini","wt").write(contents)
 
 if __name__ == "__main__":
+    error = True
     if len(sys.argv) > 6:
         channel = sys.argv[1].strip()
         pan_id = sys.argv[2].strip()
@@ -18,9 +19,8 @@ if __name__ == "__main__":
         port = sys.argv[4].strip()
         net_dev = sys.argv[5].strip()
         hub_id = sys.argv[6].strip()
-        if apn and channel and pan_id and server and port and net_dev and hub_id:
+        if channel and pan_id and server and port and net_dev and hub_id:
             process(channel,pan_id,server,port,net_dev,hub_id)
-        else:
-            print(f'{sys.argv[0]} channel pan_id server port eth0|ppp0 hub_id')
-    else:
+            error = False
+    if error:
         print(f'{sys.argv[0]} channel pan_id server port eth0|ppp0 hub_id')

@@ -16,18 +16,11 @@ echo "${IMAGE_TYPE} ${RELEASE_INFO}" > files/rpi/etc/release.info
 log "Copying file system..."
 rsync -av --progress files/rpi/ "${ROOTFS_DIR}/"
 
+mkdir -p "$DST_DIR/etc/wpa_supplicant/"
 cp "files/rpi/home/pi/scripts/conf/${IMAGE_TYPE}/wpa_supplicant.conf" "${ROOTFS_DIR}/etc/wpa_supplicant/"
 chmod 600 "${ROOTFS_DIR}/etc/wpa_supplicant/wpa_supplicant.conf"
 chown root:root "${ROOTFS_DIR}/etc/wpa_supplicant/wpa_supplicant.conf"
-
-log "Configuring AMQP..."
-on_chroot << EOF
-#rabbitmqctl add_user smccedfw.petro UFE59BBAfQxPSqYvsYM755j74RzKuNjeGSKn3nGasyaibePe
-#rabbitmqctl set_user_tags smccedfw.petro administrator
-#rabbitmqctl set_permissions -p / smccedfw.petro ".*" ".*" ".*"
-#systemctl enable rabbitmq-server
-#rabbitmq-plugins enable rabbitmq_management
-EOF
+cp "files/rpi/home/pi/scripts/conf/${IMAGE_TYPE}/hub_config.ini" "${ROOTFS_DIR}/home/pi/hub_config.ini"
 
 log "Configuring Petrobras user..."
 on_chroot << EOF
