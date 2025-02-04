@@ -15,7 +15,7 @@ fi
 
 # config file
 cat <<EOF > ./pi-gen/config
-IMG_NAME="hub"
+IMG_NAME="hub_$IMAGE_TYPE"
 #PI_GEN_RELEASE="UFU-PETROBRAS $VER"
 KEYBOARD_KEYMAP="us"
 KEYBOARD_LAYOUT="English (US)"
