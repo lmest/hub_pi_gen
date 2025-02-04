@@ -1,0 +1,57 @@
+import sys
+import os
+
+provider_file = """
+# /etc/ppp/peers/provider
+/dev/ttyUSB3 115200
+# The chat script, customize your APN in this file
+connect 'chat -s -v -f /etc/chatscripts/chat-connect -T __APN__'
+# The close script
+disconnect 'chat -s -v -f /etc/chatscripts/chat-disconnect'
+# Hide password in debug messages
+hide-password
+# The phone is not required to authenticate
+noauth
+persist
+# Debug info from pppd
+debug
+# If you want to use the HSDPA link as your gateway
+defaultroute
+# pppd must not propose any IP address to the peer
+noipdefault
+# No ppp compression
+novj
+novjccomp
+noccp
+ipcp-accept-local
+ipcp-accept-remote
+local
+# For sanity, keep a lock on the serial line
+lock
+modem
+dump
+updetach
+# Hardware flow control
+nocrtscts
+remotename 3gppp
+ipparam 3gppp
+ipcp-max-failure 30
+# Ask the peer for up to 2 DNS server addresses
+usepeerdns
+"""
+
+def process(apn):
+    provider = provider_file.replace('__APN__',apn)
+    open("/home/pi/scripts/provider","wt").write(provider)
+    os.system("sudo cp /home/pi/scripts/provider /etc/ppp/peers/provider")
+    os.system("rm /home/pi/scripts/provider")
+
+if __name__ == "__main__":
+    if len(sys.argv) > 1:
+        apn = sys.argv[1].strip()
+        if apn:
+            process(apn)
+        else:
+            print(f'{sys.argv[0]} apn')
+    else:
+        print(f'{sys.argv[0]} apn')
