@@ -1,24 +1,18 @@
 #!/bin/bash
 
 # vermelho
-echo 18 > /sys/class/gpio/unexport 
-echo 18 > /sys/class/gpio/export
-echo out > /sys/class/gpio/gpio18/direction
-echo 1 > /sys/class/gpio/gpio18/value
-
+pinctrl 18 op pn
+pinctrl set 18 dh
 sleep 0.2s
 
 # amarelo
-echo 24 > /sys/class/gpio/unexport
-echo 24 > /sys/class/gpio/export
-echo out > /sys/class/gpio/gpio24/direction
-echo 0 > /sys/class/gpio/gpio24/value
-
+pinctrl 24 op pn
+pinctrl set 24 dl
 sleep 0.2s
 
 # verde
-echo 12 > /sys/class/gpio/unexport
-echo 12 > /sys/class/gpio/export
-echo out > /sys/class/gpio/gpio12/direction
-echo 0 > /sys/class/gpio/gpio12/value
+pinctrl 12 op pn
+pinctrl set 12 dl
+sleep 0.2
+
     

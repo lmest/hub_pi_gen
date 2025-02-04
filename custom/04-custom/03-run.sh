@@ -33,3 +33,9 @@ echo "ptbr:PtBr2022!" | sudo chpasswd
 echo "pi:LmEst&22" | sudo chpasswd
 EOF
 
+log "Fixing permissions..."
+on_chroot << EOF
+(cd ${ROOTFS_DIR}/home/pi/ ; sudo chown -R pi:pi *)
+(cd ${ROOTFS_DIR}/etc/ ; sudo chown -R root:root *)
+(cd ${ROOTFS_DIR}/etc/ ; sudo chmod a+x rc.local)
+EOF

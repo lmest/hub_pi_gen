@@ -1,10 +1,11 @@
 [Unit]
-Description=Starting Watchdog Script
+Description=Watchdog Script
 After=multi-user.target
 
 [Service]
 Type=forking
 ExecStart=/usr/bin/screen -dmS watchdog sudo -E python3 /home/pi/server/watchdog.py
+WorkingDirectory=/home/pi/server/
 Restart=always
 User=pi
 TimeoutStopSec=5
