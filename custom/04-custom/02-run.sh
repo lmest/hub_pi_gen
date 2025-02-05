@@ -4,7 +4,7 @@
 log "Instaling python dependencies"
 on_chroot << EOF
 apt-get install -y python3 python3-pip python3-zmq python3-tz python3-json-tricks python3-pika 
-apt-get install -y python3-numpy python3-flask python3-serial python3-retry 
+apt-get install -y python3-numpy python3-flask python3-serial python3-retry python3-plotly
 apt-get install -y libatlas-base-dev rabbitmq-server screen mc
 apt-get install -y gcc-arm-linux-gnueabihf g++-arm-linux-gnueabihf build-essential libtool pkg-config make
 EOF

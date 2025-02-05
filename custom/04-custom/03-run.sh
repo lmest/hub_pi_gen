@@ -38,6 +38,6 @@ on_chroot << EOF
 (cd /home/pi/ ; sudo chown -R pi:pi *)
 (cd /etc/ ; sudo chown -R root:root *)
 (cd /etc/ ; sudo chmod a+x rc.local)
-sudo mkdir -p /run/screen/
-sudo chmod 755 /run/screen/
+chmod 755 /home/pi/radio/fwl_hub
+chmod 755 /home/pi/scripts/startup.sh
 EOF

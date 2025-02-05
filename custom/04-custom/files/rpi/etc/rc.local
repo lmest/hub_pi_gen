@@ -1,10 +1,10 @@
 #!/bin/bash
 
+export SCREENDIR="$HOME/.screen"
+
 if [ ! -f /etc/systemd/system/multi-user.target.wants/watchdog.service ]; then
     echo "Enabling watchdog..."
     systemctl enable watchdog.service
 fi
-
-export SCREENDIR="$HOME/.screen"
 
 exit 0
