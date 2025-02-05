@@ -32,6 +32,7 @@ touch ./pi-gen/stage3/SKIP ./pi-gen/stage4/SKIP ./pi-gen/stage5/SKIP
 touch ./pi-gen/stage4/SKIP_IMAGES ./pi-gen/stage5/SKIP_IMAGES
 
 # add custom files
+rm -fR ./pi-gen/stage2/04-custom
 cp -a custom/04-custom ./pi-gen/stage2/
 
 (cd pi-gen ; ./build.sh)
