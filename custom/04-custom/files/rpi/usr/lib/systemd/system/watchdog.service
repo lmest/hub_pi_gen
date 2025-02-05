@@ -1,14 +1,16 @@
 [Unit]
 Description=Watchdog Script
-After=multi-user.target
 
 [Service]
-Type=forking
+Environment=PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+Type=simple
 ExecStart=/home/pi/scripts/startup.sh
 WorkingDirectory=/home/pi/scripts/
 Restart=always
 User=pi
 TimeoutStopSec=5
+StandardOutput=append:/home/pi/log/watchdog.service.log
+StandardError=append:/home/pi/log/watchdog.service.error.log
 
 [Install]
 WantedBy=multi-user.target

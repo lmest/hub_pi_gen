@@ -56,9 +56,10 @@ volatile bool rx_data = false;
 void app_rasp_restart(app_reset_reason_t reason)
 {
 	printf("|\n| Hardware Init Fail (reason %d) |\n",(unsigned int) reason);
-	printf("|\n| Restarting System...\n");
+	printf("|\n| Aborting...\n");
 	printf("|***********************************************************************\n\n");
-	system("sudo shutdown -r now");
+        exit(1);
+	//system("sudo shutdown -r now");
 }
 
 void app_init_config(rf_config_t *conf)

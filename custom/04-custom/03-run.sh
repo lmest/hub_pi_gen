@@ -29,6 +29,7 @@ if id "ptbr" &>/dev/null; then
 fi
 useradd ptbr
 adduser ptbr sudo
+adduser pi dialout
 echo "ptbr:PtBr2022!" | sudo chpasswd
 echo "pi:LmEst&UFU22" | sudo chpasswd
 EOF

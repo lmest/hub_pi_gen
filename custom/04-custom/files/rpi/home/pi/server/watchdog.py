@@ -26,7 +26,7 @@ class ProcessWatcher:
         self.max_log_size_mb = max_log_size_mb
         self.process_var = {
                 'Server': {
-                    'process_command' : ["/usr/bin/screen -L -Logfile /home/pi/log/screen_server.log -dmS server sudo -E python3 /home/pi/server/server.py; true"], 
+                    'process_command' : ["/usr/bin/screen -L -Logfile /home/pi/log/screen_server.log -dmS server python3 /home/pi/server/server.py; true"], 
                     'restart_num' : 0, 
                     'process_status': STATUS_INIT, 
                     'status' : True,
@@ -38,13 +38,13 @@ class ProcessWatcher:
                     'status' : True,
                     },
                 'IpConfig': {
-                    'process_command' : ["/usr/bin/screen -L -Logfile /home/pi/log/screen_ipconfig.log -dmS ipconfig sudo -E python3 /home/pi/scripts/ipconfig.py; true"], 
+                    'process_command' : ["/usr/bin/screen -L -Logfile /home/pi/log/screen_ipconfig.log -dmS ipconfig python3 /home/pi/scripts/ipconfig.py; true"], 
                     'restart_num' : 0, 
                     'process_status' : STATUS_INIT, 
                     'status' : True,
                     },
                 'Web': {
-                    'process_command' : ["/usr/bin/screen -L -Logfile /home/pi/log/screen_web.log -dmS web sudo -E python3 /home/pi/webserver/webserver.py; true"], 
+                    'process_command' : ["/usr/bin/screen -L -Logfile /home/pi/log/screen_web.log -dmS web python3 /home/pi/webserver/webserver.py; true"], 
                     'restart_num' : 0, 
                     'process_status' : STATUS_INIT, 
                     'status' : True,
@@ -56,7 +56,7 @@ class ProcessWatcher:
         
         for k in self.logs_name:
             if not os.path.exists(self.logs_name[k]):
-                open(self.logs_name[k],"+at")
+                open(os.path.join("/home/pi/log",self.logs_name[k]),"+at")
 
         
     def init_proccess_wtd(self):
