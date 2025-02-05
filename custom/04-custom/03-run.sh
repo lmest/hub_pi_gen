@@ -35,7 +35,9 @@ EOF
 
 log "Fixing permissions..."
 on_chroot << EOF
-(cd ${ROOTFS_DIR}/home/pi/ ; sudo chown -R pi:pi *)
-(cd ${ROOTFS_DIR}/etc/ ; sudo chown -R root:root *)
-(cd ${ROOTFS_DIR}/etc/ ; sudo chmod a+x rc.local)
+(cd /home/pi/ ; sudo chown -R pi:pi *)
+(cd /etc/ ; sudo chown -R root:root *)
+(cd /etc/ ; sudo chmod a+x rc.local)
+sudo mkdir -p /run/screen/
+sudo chmod 755 /run/screen/
 EOF
