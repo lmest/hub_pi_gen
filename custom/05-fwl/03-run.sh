@@ -40,5 +40,6 @@ on_chroot << EOF
 (cd /etc/ ; sudo chown -R root:root *)
 (cd /etc/ ; sudo chmod a+x rc.local)
 chmod 755 /home/pi/radio/fwl_hub
-chmod 755 /home/pi/scripts/startup.sh
+chmod 755 /home/pi/scripts/*.sh
+chmod 755 /home/pi/scripts/*.py
 EOF
