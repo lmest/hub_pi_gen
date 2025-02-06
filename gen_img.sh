@@ -16,24 +16,29 @@ fi
 # config file
 cat <<EOF > ./pi-gen/config
 IMG_NAME="hub_$IMAGE_TYPE"
-#PI_GEN_RELEASE="UFU-PETROBRAS $VER"
-KEYBOARD_KEYMAP="us"
-KEYBOARD_LAYOUT="English (US)"
 TIMEZONE_DEFAULT="America/Sao_Paulo"
 FIRST_USER_NAME="pi"
 FIRST_USER_PASS="LmEst&UFU22"
 WPA_COUNTRY="BR"
+KEYBOARD_KEYMAP="us"
+KEYBOARD_LAYOUT="English (US)"
 LOCALE_DEFAULT="en_US.UTF-8"
 #USE_QEMU=1
 EOF
+
+export LC_CTYPE=en_US.UTF-8
+export LC_ALL=en_US.UTF-8
 
 # remove UI stages
 touch ./pi-gen/stage3/SKIP ./pi-gen/stage4/SKIP ./pi-gen/stage5/SKIP
 touch ./pi-gen/stage4/SKIP_IMAGES ./pi-gen/stage5/SKIP_IMAGES
 
 # add custom files
-rm -fR ./pi-gen/stage2/04-custom
-cp -a custom/04-custom ./pi-gen/stage2/
+rm -fR ./pi-gen/stage2/04-packages
+rm -fR ./pi-gen/stage2/05-fwl
+
+cp -a custom/04-packages ./pi-gen/stage2/
+cp -a custom/05-fwl ./pi-gen/stage2/
 
 (cd pi-gen ; ./build.sh)
 
