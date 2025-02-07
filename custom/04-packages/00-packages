@@ -9,6 +9,7 @@ python3-flask
 python3-serial
 python3-retry
 python3-plotly
+python3-yaml
 libatlas-base-dev
 rabbitmq-server
 gcc-arm-linux-gnueabihf
@@ -22,3 +23,4 @@ libpigpio-dev
 screen
 mc
 tcpdump
+git

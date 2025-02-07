@@ -30,6 +30,7 @@ fi
 useradd ptbr
 adduser ptbr sudo
 adduser pi dialout
+adduser pi dip
 echo "ptbr:PtBr2022!" | sudo chpasswd
 echo "pi:LmEst&UFU22" | sudo chpasswd
 EOF
