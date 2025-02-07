@@ -24,3 +24,5 @@ screen
 mc
 tcpdump
 git
+lsof
+
