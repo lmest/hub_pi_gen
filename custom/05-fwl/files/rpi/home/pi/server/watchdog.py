@@ -94,10 +94,6 @@ class ProcessWatcher:
         time.sleep(5)
 
     @staticmethod
-    def check_amqp_install():
-        subprocess.Popen(["sudo /home/pi/scripts/amqp_install.sh; true"], shell=True)
-
-    @staticmethod
     def process_is_open(process_name):
         screen_ls = check_output(["screen -ls; true"], shell=True)
         return process_name in str(screen_ls)
@@ -139,6 +135,5 @@ class ProcessWatcher:
 
 if __name__ == '__main__':
     pw = ProcessWatcher(20, 10)
-    pw.check_amqp_install()
     pw.init_proccess_wtd()
     pw.run(5)

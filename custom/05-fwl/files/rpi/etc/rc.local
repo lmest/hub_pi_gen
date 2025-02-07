@@ -2,10 +2,45 @@
 
 export SCREENDIR="$HOME/.screen"
 
-if [ ! -f /etc/systemd/system/multi-user.target.wants/watchdog.service ]; then
-    echo "Enabling watchdog..."
+FWL_FACT_INIT="/boot/firmware/fwl.txt"
+
+service_is_running()
+{
+    svr=$1
+    if systemctl is-active --quiet $svr; then
+        return 1
+    else
+        return 0
+    fi
+}
+
+if [ -f $FWL_FACT_INIT ]; then
+
+    service_is_running rabbitmq-server
+
+    if [ $? -eq 1 ]; then
+        sudo systemctl disable rabbitmq-server
+    fi
+
+    echo "Configuring rabbitmq..." | sudo tee /dev/kmsg
+    rabbitmqctl add_user smccedfw.petro UFE59BBAfQxPSqYvsYM755j74RzKuNjeGSKn3nGasyaibePe
+    rabbitmqctl set_user_tags smccedfw.petro administrator
+    rabbitmqctl set_permissions -p / smccedfw.petro ".*" ".*" ".*"
+    systemctl enable rabbitmq-server
+    systemctl start rabbitmq-server
+    rabbitmq-plugins enable rabbitmq_management
+
+    service_is_running watchdog.service
+
+    if [ $? -eq 1 ]; then
+        systemctl disable watchdog.service
+    fi
+
+    echo "Enabling watchdog..." | sudo tee /dev/kmsg
     systemctl enable watchdog.service
     systemctl start watchdog.service
+
+    rm $FWL_FACT_INIT
 fi
 
 exit 0
