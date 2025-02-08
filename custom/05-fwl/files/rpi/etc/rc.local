@@ -40,10 +40,6 @@ if [ -f $FWL_FACT_INIT ]; then
     systemctl enable watchdog.service
     systemctl start watchdog.service
 
-	if ! (grep -q 'max_usb_current' /boot/firmware/config.txt ); then
-		echo "max_usb_current=1" >> /boot/firmware/config.txt
-	fi    
-
     rm $FWL_FACT_INIT
 fi
 
