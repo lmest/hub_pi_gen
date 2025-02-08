@@ -1,5 +1,10 @@
 #!/bin/bash -e
 # $1 destination
+
+log "-----------------------------------------------------"
+log "        Full Wireless file system adjustments"
+log "-----------------------------------------------------"
+
 log "Installing radio server..."
 if [ -d "${ROOTFS_DIR}/tmp/radio/" ]; then
     rm -fR "${ROOTFS_DIR}/tmp/radio/"
@@ -29,7 +34,7 @@ if id "ptbr" &>/dev/null; then
 fi
 useradd ptbr
 adduser ptbr sudo
-adduser pi dialout
+#adduser pi dialout
 adduser pi dip
 echo "ptbr:PtBr2022!" | sudo chpasswd
 echo "pi:LmEst&UFU22" | sudo chpasswd
