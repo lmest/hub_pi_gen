@@ -14,7 +14,7 @@ log "-----------------------------------------------------"
 #(cd /tmp/multitimer-master/ ; python3 setup.py install)
 #EOF
 
-log "Installing pip dependencies: atcom, multitimer, pyserial"
+log "Installing pip dependencies: atcom, multitimer"
 #if [ -d "${ROOTFS_DIR}/tmp/atcom-master/" ]; then
 #    rm -fR "${ROOTFS_DIR}/tmp/atcom-master/"
 #fi
@@ -24,7 +24,7 @@ log "Installing pip dependencies: atcom, multitimer, pyserial"
 #(cd /tmp/atcom-master/ ; python3 setup.py install)
 #EOF
 on_chroot << EOF
-pip3 install atcom multitimer pyserial --break-system-packages 
+pip3 install atcom multitimer --break-system-packages 
 EOF
 
 if [ ${IMAGE_TYPE} = "lte" ]; then

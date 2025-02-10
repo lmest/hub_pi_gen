@@ -8,6 +8,7 @@ python3-flask
 python3-retry
 python3-plotly
 python3-yaml
+python3-serial
 libatlas-base-dev
 rabbitmq-server
 libtool
