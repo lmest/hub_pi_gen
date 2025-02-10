@@ -42,7 +42,7 @@ EOF
 
 log "Fixing permissions..."
 on_chroot << EOF
-(cd /home/pi/ ; sudo chown -R pi:pi *)
+(cd /home/ ; sudo chown -R pi:pi pi)
 (cd /etc/ ; sudo chown -R root:root *)
 (cd /etc/ ; sudo chmod a+x rc.local)
 chmod 755 /home/pi/radio/fwl_hub
