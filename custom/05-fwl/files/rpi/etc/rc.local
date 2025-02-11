@@ -3,6 +3,7 @@
 export SCREENDIR="$HOME/.screen"
 
 FWL_FACT_INIT="/boot/firmware/fwl.txt"
+HUB_CFG="/boot/firmware/hub_config.ini"
 
 service_is_running()
 {
@@ -14,6 +15,19 @@ service_is_running()
     fi
 }
 
+# 
+# copy hub_config.ini if it is on fat partition
+#
+if [ -f $HUB_CFG ]; then
+    cp $HUB_CFG /home/pi/hub_config.ini
+    chown pi:pi /home/pi/hub_config.ini
+    chmod 644 /home/pi/hub_config.ini
+    rm $HUB_CFG
+fi
+
+# 
+# start full wireless services
+#
 if [ -f $FWL_FACT_INIT ]; then
 
     service_is_running rabbitmq-server
