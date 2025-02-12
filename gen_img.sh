@@ -34,11 +34,14 @@ touch ./pi-gen/stage3/SKIP ./pi-gen/stage4/SKIP ./pi-gen/stage5/SKIP
 touch ./pi-gen/stage4/SKIP_IMAGES ./pi-gen/stage5/SKIP_IMAGES
 
 # add custom files
-rm -fR ./pi-gen/stage2/04-packages
-rm -fR ./pi-gen/stage2/05-fwl
+rm -fR ./pi-gen/stage2/04-remove
+rm -fR ./pi-gen/stage2/05-packages
+rm -fR ./pi-gen/stage2/06-fwl
 
-cp -a custom/04-packages ./pi-gen/stage2/
-cp -a custom/05-fwl ./pi-gen/stage2/
+cp custom/prerun.sh      ./pi-gen/export-image/prerun.sh
+cp -a custom/04-remove   ./pi-gen/stage2/
+cp -a custom/05-packages ./pi-gen/stage2/
+cp -a custom/06-fwl      ./pi-gen/stage2/
 
 (cd pi-gen ; ./build.sh)
 

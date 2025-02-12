@@ -42,7 +42,7 @@ EOF
 
 log "Fixing permissions..."
 on_chroot << EOF
-apt remove -y --purge modemmanager
+sudo apt-get clean
 (cd /home/ ; sudo chown -R pi:pi pi)
 (cd /etc/ ; sudo chown -R root:root *)
 (cd /etc/ ; sudo chmod a+x rc.local)
