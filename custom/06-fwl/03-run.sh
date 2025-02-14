@@ -38,6 +38,8 @@ adduser ptbr sudo
 adduser pi dip
 echo "ptbr:PtBr2022!" | sudo chpasswd
 echo "pi:LmEst&UFU22" | sudo chpasswd
+systemctl disable userconfig.service
+systemctl disable  NetworkManager-wait-online.service
 EOF
 
 log "Fixing permissions..."
