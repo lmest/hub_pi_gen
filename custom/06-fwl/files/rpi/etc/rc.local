@@ -5,6 +5,68 @@ export SCREENDIR="$HOME/.screen"
 FWL_FACT_INIT="/boot/firmware/fwl.txt"
 HUB_CFG="/boot/firmware/hub_config.ini"
 
+LED_YELLOW=24
+LED_RED=18
+LED_GREEN=12
+
+led_on()
+{
+    pin=$1
+    pinctrl set $pin dh
+}
+
+led_off()
+{
+    pin=$1
+    pinctrl set $pin dl
+}
+
+leds_on()
+{
+    pinctrl set $LED_RED,$LED_YELLOW,$LED_GREEN dh
+}
+
+leds_off()
+{
+    pinctrl set $LED_RED,$LED_YELLOW,$LED_GREEN dl
+}
+
+leds_blink()
+{
+    ntimes=$1
+    for i in $(seq $ntimes)
+    do
+        leds_on 
+        sleep 0.2s
+        leds_off 
+        sleep 0.2s
+    done
+}
+
+led_blink()
+{
+    ntimes=$1
+    pin=$2
+    for i in $(seq $ntimes)
+    do
+        led_on $pin
+        sleep 0.2s
+        led_off $pin
+        sleep 0.2s
+    done
+}
+
+led_config()
+{
+    pinctrl $LED_RED op pn
+    pinctrl $LED_YELLOW op pn
+    pinctrl $LED_GREEN op pn
+
+    led_off $LED_RED
+    led_off $LED_YELLOW
+    led_off $LED_GREEN
+}
+
 service_is_running()
 {
     svr=$1
@@ -14,6 +76,8 @@ service_is_running()
         return 0
     fi
 }
+
+led_config
 
 # 
 # copy hub_config.ini if it is on fat partition
@@ -30,9 +94,28 @@ fi
 #
 if [ -f $FWL_FACT_INIT ]; then
 
+    service_is_running watchdog.service
+
+    if [ $? -eq 1 ]; then
+        systemctl stop watchdog.service
+        systemctl disable watchdog.service
+    fi
+
+    led_off $LED_RED
+    led_off $LED_YELLOW
+    led_off $LED_GREEN
+    sleep 0.5
+
+    leds_blink 3
+
+    echo "Enabling watchdog..." | sudo tee /dev/kmsg
+    systemctl enable watchdog.service
+    systemctl start watchdog.service
+
     service_is_running rabbitmq-server
 
     if [ $? -eq 1 ]; then
+        sudo systemctl stop rabbitmq-server
         sudo systemctl disable rabbitmq-server
     fi
 
@@ -44,17 +127,9 @@ if [ -f $FWL_FACT_INIT ]; then
     systemctl start rabbitmq-server
     rabbitmq-plugins enable rabbitmq_management
 
-    service_is_running watchdog.service
-
-    if [ $? -eq 1 ]; then
-        systemctl disable watchdog.service
-    fi
-
-    echo "Enabling watchdog..." | sudo tee /dev/kmsg
-    systemctl enable watchdog.service
-    systemctl start watchdog.service
-
     rm $FWL_FACT_INIT
+else
+    leds_blink 2
 fi
 
 exit 0
