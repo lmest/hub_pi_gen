@@ -31,7 +31,10 @@ class RadioRxQueue(object):
         self.print_current_queue()            
 
     def remove_data_queue(self):
-        self.q.get_nowait()
+        try:
+            sensor_id = self.q.get_nowait()
+        except Exception as e:
+            sensor_id = None
         logging.info(f"Removing sensor from Queue (ID = {sensor_id})")
         self.print_current_queue()            
 
