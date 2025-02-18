@@ -36,7 +36,7 @@ class ReadQueue(object):
     def bind(self):
         self.channel.queue_bind(exchange=self.exchange, queue=self.queue, routing_key=self.routing_key)
 
-    @retry(delay=5)
+    @retry(delay=5,logger=None)
     def consume(self):         
         self.log_consume()
         self.connect()
