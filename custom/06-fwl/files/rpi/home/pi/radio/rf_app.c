@@ -125,7 +125,6 @@ void rf_app_init(rf_config_t *config, rf_app_tx_cbk_func tx_cbk, rf_app_rx_cbk_f
 	PHY_Init(config->mode);
 
 	PHY_Set_Multicast(config->multicast);
-	PHY_SetTxPower(config->tx_power);
 	PHY_SetShortAddr(config->addr);
 	PHY_SetPanId(config->pan_id);
 	PHY_SetChannel(config->channel);
@@ -165,5 +164,18 @@ void rf_app_init(rf_config_t *config, rf_app_tx_cbk_func tx_cbk, rf_app_rx_cbk_f
 	default:
 		break;
 	}
+
+	if(config->pa_enabled)
+	{
+		// use -2 as max power or pa will be damaged
+		PHY_SetPAExtCtrl(true);
+		PHY_SetTxPower(RF_TXPWR_m2dBm);
+	}
+	else
+	{
+		PHY_SetPAExtCtrl(false);
+		PHY_SetTxPower(config->tx_power);
+	}
+	
 }
 

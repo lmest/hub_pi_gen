@@ -509,6 +509,11 @@ rf_send_status_t PHY_DataReq(uint8_t *data, uint8_t size, uint16_t pan_id_addr, 
 	return RF_APP_SEND_OK;
 }
 
+uint8_t PHY_ReadPartNumber(void)
+{
+	return phyReadRegister(PART_NUM_REG);
+}
+
 uint8_t PHY_ReadChipID(void)
 {
 	return phyReadRegister(VERSION_NUM_REG);
@@ -853,6 +858,16 @@ void PHY_TaskHandler(void)
 void PHY_Interrupt(void)
 {
 	PHY_TaskHandler();
+}
+
+void PHY_SetPAExtCtrl(bool state)
+{
+  uint8_t reg = phyReadRegister(TRX_CTRL_1_REG);
+  //volatile uint8_t reg2 = phyReadRegister(VREG_CTRL_REG);
+  if(state)
+    phyWriteRegister(TRX_CTRL_1_REG, reg | (1 << 7));
+  else
+    phyWriteRegister(TRX_CTRL_1_REG, reg & 0x7F);
 }
 
 void phyForceSetRxState(void)

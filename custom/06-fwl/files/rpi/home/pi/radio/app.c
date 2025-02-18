@@ -35,6 +35,7 @@ typedef enum app_reset_reason_e
 	APP_SPI_INIT_ERROR,
 	APP_PIGPIO_CFG_ERROR,
 	APP_TIMER_INIT_ERROR,
+	APP_INT_CFG_ERROR,
 } app_reset_reason_t;
 
 typedef struct hub_configuration_s
@@ -43,6 +44,7 @@ typedef struct hub_configuration_s
     uint16_t pan_id;
     uint16_t radio_wtd;
     uint16_t server_wtd;
+    bool pa_enabled;
 } hub_configuration_t;
 
 rf_config_t radio_config;
@@ -118,11 +120,19 @@ void hw_init(void)
 	if(hw_set_gpio_input(AT86_9_IRQ_GPIO) < 0)
 		app_rasp_restart(APP_PIGPIO_CFG_ERROR);
 
-	if (hw_set_resistor_pull_off(AT86_9_IRQ_GPIO) == 0)
+	if (hw_set_resistor_pull_up(AT86_9_IRQ_GPIO) == 0)
 		printf("| Pull up resistor for radio interruption set!\n|\n");
 
-	if (gpioSetISRFunc(AT86_9_IRQ_GPIO, FALLING_EDGE, 10, rpi_at86_interrupt) == 0)
+//	int status = gpioSetISRFunc(AT86_9_IRQ_GPIO, FALLING_EDGE, 10, rpi_at86_interrupt);
+	int status = gpioSetAlertFunc(AT86_9_IRQ_GPIO, rpi_at86_interrupt);
+
+	if (status == 0)
 		printf("| GPIO change state callback set!\n|\n");
+	else
+	{
+		printf("| GPIO change state callback error: %d!\n|\n",status);
+		app_rasp_restart(APP_INT_CFG_ERROR);
+	}
 
 	if (hw_set_gpio_output(RPI_LED3_GPIO) < 0)
 		app_rasp_restart(APP_PIGPIO_CFG_ERROR);
@@ -160,7 +170,13 @@ static int file_handler(void* user, const char* section, const char* name, const
 		printf("| Radio Time Reset: %d minutes\n", pconfig->radio_wtd);
 		max_wait_time_reset = pconfig->radio_wtd;
     }     
-	   
+    else if (MATCH("radio", "pa_enabled")) 
+    {
+        pconfig->pa_enabled = atoi(value) > 0;
+		radio_config.pa_enabled = pconfig->pa_enabled;
+		printf("| Radio PA enabled: %s\n", radio_config.pa_enabled ? "on" : "false");
+    }   
+
 	return 1;
 }
 
@@ -210,6 +226,8 @@ void app_radio_init(void)
 
     app_init_config(&radio_config); 
     rf_app_init(&radio_config, app_tx_cbk, app_rx_cbk, app_cca_cbk, app_radio_fail_cbk); 
+
+    printf("| Part Number: %02X, Chip ID: %02X\n|\n",PHY_ReadPartNumber(),PHY_ReadChipID());
 
 	printf("|***********************************************************************\n|\n");
 	printf("| Status: RPi initialization finished!\n|\n");

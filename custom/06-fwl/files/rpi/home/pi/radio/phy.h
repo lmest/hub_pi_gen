@@ -166,6 +166,7 @@ rf_send_status_t PHY_DataReq(uint8_t *data, uint8_t size, uint16_t pan_id_addr, 
 void PHY_DataConf(uint8_t status);
 void PHY_DataInd(PHY_DataInd_t *ind);
 void PHY_TaskHandler(void);
+uint8_t PHY_ReadPartNumber(void);
 uint8_t PHY_ReadChipID(void);
 uint8_t PHY_ReadDataRate(void);
 void PHY_SetDataRate(uint8_t data_rate);
@@ -182,6 +183,7 @@ uint8_t PHY_GetDataRate(void);
 uint8_t PHY_GetTxPower(void);
 uint8_t PHY_GetRSSI(void);
 uint8_t PHY_GetFCSStatus(void);
+void PHY_SetPAExtCtrl(bool state);
 
 uint8_t PHY_GetNextSeqNumber(bool app_retx);
 bool phyTrxSetState(uint8_t state);

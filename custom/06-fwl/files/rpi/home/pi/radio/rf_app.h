@@ -138,6 +138,7 @@ typedef struct rf_config_s
 	bool reduced_power_enable;
 	bool always_return_state_rx;
 	bool multicast;
+	bool pa_enabled;
 } rf_config_t;
 
 
