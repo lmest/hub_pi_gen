@@ -30,12 +30,14 @@ volatile uint32_t hw_tick_ms = 0;
 void hw_at86_disable_irq(void)
 {
 	//printf("IRQ disabled!\n");
-	gpioSetISRFunc(AT86_9_IRQ_GPIO, FALLING_EDGE, 0, NULL);
+	//gpioSetISRFunc(AT86_9_IRQ_GPIO, FALLING_EDGE, 0, NULL);
+	gpioSetAlertFunc(AT86_9_IRQ_GPIO, NULL);
 }
 void hw_at86_enable_irq(void)
 {
 	//printf("IRQ enabled!\n");
-	gpioSetISRFunc(AT86_9_IRQ_GPIO, FALLING_EDGE, 0, rpi_at86_interrupt);
+	//gpioSetISRFunc(AT86_9_IRQ_GPIO, FALLING_EDGE, 0, rpi_at86_interrupt);
+	gpioSetAlertFunc(AT86_9_IRQ_GPIO,rpi_at86_interrupt);
 }
 
 void hw_at86_rst_clear(void)
@@ -162,7 +164,8 @@ void rpi_close_spi(void)
 
 void rpi_at86_interrupt(int gpio, int level, uint32_t tick)
 {
-	PHY_TaskHandler();	
+	if(level == 0)
+		PHY_TaskHandler();
 }
 
 void rpi_gpio_on(int gpio_id)
