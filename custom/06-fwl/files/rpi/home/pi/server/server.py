@@ -190,7 +190,8 @@ class Server(object):
             try:
                 self.msg_received = self.send_data.receive_zmq()
             except Exception as e:
-                logging.warning("receive_loop error" + str(e))
+                logging.error("receive_loop error" + str(e))
+                time.sleep(1)
             else:
                 self.cmd = self.msg_received[0]
                 

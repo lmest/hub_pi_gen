@@ -93,7 +93,13 @@ class RadioTx():
 
     def __protected_pub_send(self,msg):
         self.sema.acquire()
-        self.sock_pub.send(msg)
+        
+        try:
+            self.sock_pub.send(msg)
+        except Exception as e:
+            logging.error("Pub send error: " + str(e))
+            time.sleep(1)
+
         self.sema.release()
 
     def send_server_status(self, status):
