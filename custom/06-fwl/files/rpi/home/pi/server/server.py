@@ -166,7 +166,7 @@ class Server(object):
             
     def read_beacon_fwl(self):
         try:
-            (self.cmd, self.sensor_zid, ed) = struct.unpack('<BB', self.msg_received)
+            (self.cmd, self.sensor_zid, ed) = struct.unpack('<BBB', self.msg_received)
         except struct.error as e:
             logging.warning("Unpack Error Beacon: {}".format(e))
         else:

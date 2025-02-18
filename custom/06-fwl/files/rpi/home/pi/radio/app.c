@@ -174,7 +174,7 @@ static int file_handler(void* user, const char* section, const char* name, const
     {
         pconfig->pa_enabled = atoi(value) > 0;
 		radio_config.pa_enabled = pconfig->pa_enabled;
-		printf("| Radio PA enabled: %s\n", radio_config.pa_enabled ? "on" : "false");
+		printf("| Radio PA enabled: %s\n", radio_config.pa_enabled ? "on" : "off");
     }   
 
 	return 1;
