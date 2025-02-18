@@ -57,8 +57,8 @@ volatile bool rx_data = false;
 
 void app_rasp_restart(app_reset_reason_t reason)
 {
-	printf("|\n| Hardware Init Fail (reason %d) |\n",(unsigned int) reason);
-	printf("|\n| Aborting...\n");
+	printf("| Hardware Init Fail (reason %d) |\n",(unsigned int) reason);
+	printf("| Aborting...\n");
 	printf("|***********************************************************************\n\n");
         exit(1);
 	//system("sudo shutdown -r now");
@@ -103,7 +103,7 @@ void app_cca_cbk(bool channel_is_idle){}
 
 void app_radio_fail_cbk(rf_error_t fail)
 {
-	printf("|\n| Radio cbk reset! \n|\n");
+	printf("| Radio cbk reset! \n");
 	app_radio_restart();
 }
 
@@ -121,16 +121,16 @@ void hw_init(void)
 		app_rasp_restart(APP_PIGPIO_CFG_ERROR);
 
 	if (hw_set_resistor_pull_up(AT86_9_IRQ_GPIO) == 0)
-		printf("| Pull up resistor for radio interruption set!\n|\n");
+		printf("| Pull up resistor for radio interruption set!\n");
 
 //	int status = gpioSetISRFunc(AT86_9_IRQ_GPIO, FALLING_EDGE, 10, rpi_at86_interrupt);
 	int status = gpioSetAlertFunc(AT86_9_IRQ_GPIO, rpi_at86_interrupt);
 
 	if (status == 0)
-		printf("| GPIO change state callback set!\n|\n");
+		printf("| GPIO change state callback set!\n");
 	else
 	{
-		printf("| GPIO change state callback error: %d!\n|\n",status);
+		printf("| GPIO change state callback error: %d!\n",status);
 		app_rasp_restart(APP_INT_CFG_ERROR);
 	}
 
@@ -205,10 +205,10 @@ void app_radio_init(void)
     hw_init();
 
 	if(cmng_init() == CMNG_OK)
-        printf("| ZMQ set!\n|\n");
+        printf("| ZMQ set!\n");
     else
 	{
-		printf("| ZMQ error!\n|\n");
+		printf("| ZMQ error!\n");
 		end_prog = FINISH_PROGRAM;
 	}       
 
@@ -217,20 +217,20 @@ void app_radio_init(void)
 	read_file(); 
 
 	if(hw_timers_init() == TIMER_SET_OK)
-		printf("| Timers init Ok!\n|\n");
+		printf("| Timers init Ok!\n");
 	else
 	{
-		printf("| Timers init error!\n|\n");
+		printf("| Timers init error!\n");
 		app_rasp_restart(APP_TIMER_INIT_ERROR);
 	}
 
     app_init_config(&radio_config); 
     rf_app_init(&radio_config, app_tx_cbk, app_rx_cbk, app_cca_cbk, app_radio_fail_cbk); 
 
-    printf("| Part Number: %02X, Chip ID: %02X\n|\n",PHY_ReadPartNumber(),PHY_ReadChipID());
+    printf("| Part Number: %02X, Chip ID: %02X\n",PHY_ReadPartNumber(),PHY_ReadChipID());
 
-	printf("|***********************************************************************\n|\n");
-	printf("| Status: RPi initialization finished!\n|\n");
+	printf("|***********************************************************************\n");
+	printf("| Status: RPi initialization finished!\n");
 }
 
 void app_radio_restart(void)

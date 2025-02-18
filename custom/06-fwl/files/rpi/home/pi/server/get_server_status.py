@@ -18,16 +18,18 @@ class Get_ServerStatus():
         self.config_ini = ConfigIni()
         
     def set_reply_status(self):
+        logging.warning("Radio sync message receivend, resetting Connection Status")
         self.reply_status = True    
         
     def check_reply_status(self):
+        logging.warning(f"Checking reply status status={self.reply_status} restarted={self.radio_process_restarted}")
         if self.reply_status == False:
             if self.radio_process_restarted == False:
-                logging.warning("Radio process did not respond request - Restarting it!\n")
+                logging.warning("Radio process did not respond request - Restarting it!")
                 os_mng.restart_radio_script()
                 self.radio_process_restarted = True
             else:
-                logging.warning("Radio process did not respond request - Rebooting system!\n")
+                logging.warning("Radio process did not respond request - Rebooting system!")
                 os_mng.reboot_system()
         self.reply_status = False
                     
@@ -67,9 +69,11 @@ class Get_ServerStatus():
             self.get_server_addr_port()
             self.get_hub_id()
             status = self.check_server_status()
-            logging.info("Server Connection Status: {} \n".format(status))
-            RadioTx().send_server_status(status)
+            logging.info("Backend Connection Status: {}".format(status))
             
+            logging.warning(f"Send radio status command (backend = {status})")
+            RadioTx().send_server_status(status)
+            logging.warning("Starting timer for Radio Connection Status")
             check_reply = multitimer.MultiTimer(interval=10, function=self.check_reply_status, count=1, runonstart=False)
             check_reply.start()
         

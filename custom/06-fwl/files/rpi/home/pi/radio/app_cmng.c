@@ -45,14 +45,14 @@ void app_cmng_get_in_msg2send_cbf(msg2send_t* buffer_in)
     cbf_get(&cbf_in, &buffer_in->msg_num);
     cbf_get(&cbf_in, &buffer_in->size);
 
-    printf("|\n| Msg to Send: ZID[%u] - MSG_NUM[%u] - SIZE[%u]\n|\n", buffer_in->zid, buffer_in->msg_num, buffer_in->size);
+    printf("| Msg to Send: ZID[%u] - MSG_NUM[%u] - SIZE[%u]\n", buffer_in->zid, buffer_in->msg_num, buffer_in->size);
 
     for (uint8_t msg_pos = 0; msg_pos < (buffer_in->size); msg_pos++)
     {
         cbf_get(&cbf_in, &buffer_in->buffer[msg_pos]);
         printf("%u ", buffer_in->buffer[msg_pos]);
     }
-    printf("\n|\n");
+    printf("\n");
 }
 
 void app_cmng_get_in_filter_cbf(msg_filter_t *read_msg_in)
@@ -113,7 +113,7 @@ uint8_t app_cmng_send_frame(uint8_t *buffer, uint8_t payload_size, uint16_t dest
 	
 	if(send_status != RF_APP_SEND_OK)
     {
-        printf("|\n| Transmission Error: Restarting Radio! \n");
+        printf("| Transmission Error: Restarting Radio! \n");
         app_radio_restart();
     }
 		   
@@ -172,24 +172,24 @@ void app_cmng_filter_in(void)
     switch (buff_msg_type)
     {
     case NEW_FILTER_LIST:
-        printf("|\n| New Filter List\n|\n");
+        printf("| New Filter List\n");
         app_cmng_new_filter_list();
         break;
     
     case MSG_TO_SEND:
         hw_at86_disable_irq();
-        //printf("|\n| Mesage to Send|\n");
+        //printf("| Mesage to Send|\n");
         app_cmng_msg_to_send();
         break;
 
     case RESET_GPIO:
-        printf("|\n| Reset GPIO\n|\n");
+        printf("| Reset GPIO\n");
         rpi_reset();
         break;
 
     case SERVER_STATUS:
         status_server = app_cmng_get_in_server_status();
-        printf("|\n| Server Connection Status: %d\n|\n", status_server);
+        printf("| Received Server Connection Status: %d\n", status_server);
         rpi_gpio_on(RPI_LED3_GPIO);
         rpi_gpio_off(RPI_LED2_GPIO);
         rpi_gpio_off(RPI_LED1_GPIO);
@@ -219,13 +219,13 @@ int app_cmng_verify_filter_list_pid(msg_radio_t* radio_msg, uint16_t *scr_addr)
     filter_list[filter_list_num_itens].zid = filter_list_num_itens;
     filter_list[filter_list_num_itens].seq_number = *scr_addr;
 
-    printf("|\n| New Sensor Added - ZID[%u] - PID:[ ", filter_list_num_itens);    
+    printf("| New Sensor Added - ZID[%u] - PID:[ ", filter_list_num_itens);    
     for (uint8_t fl_pos = 0; fl_pos < PID_SIZE; fl_pos++)
     {
         filter_list[filter_list_num_itens].pid[fl_pos] = radio_msg->pid[fl_pos];
         printf("%u ", filter_list[filter_list_num_itens].pid[fl_pos]);
     }
-    printf("]\n|\n");    
+    printf("]\n");    
 
     filter_list_num_itens++;
 
@@ -279,7 +279,7 @@ void app_cmng_filter_out(uint8_t *radio_buffer, uint8_t buff_size, uint16_t src_
 
             cmng_publish(radio_buffer, buff_size + 3);
             
-            printf("|\n| New Beacon: %u\n|\n", buff_size);  
+            printf("| New Beacon: %u\n", buff_size);  
         }
     }
     else if (new_msg_radio.radio_cmd == RF_CMD_DATA_BCI)
@@ -302,7 +302,7 @@ void app_cmng_filter_out(uint8_t *radio_buffer, uint8_t buff_size, uint16_t src_
 
             cmng_publish(radio_buffer, buff_size + 2);
             
-            printf("|\n| New Beacon: %u\n|\n", buff_size);  
+            printf("| New Beacon: %u\n", buff_size);  
         }
     }
     else if (new_msg_radio.radio_cmd == RF_CMD_BEACON)
@@ -392,7 +392,7 @@ void app_cmng_filter_out(uint8_t *radio_buffer, uint8_t buff_size, uint16_t src_
 
             cmng_publish(radio_buffer, buff_size + 1);
             
-            printf("|\n| ZIGBEE UPDATE CHECK-IN: %u\n|\n", buff_size); 
+            printf("| ZIGBEE UPDATE CHECK-IN: %u\n", buff_size); 
         }
     }
     else

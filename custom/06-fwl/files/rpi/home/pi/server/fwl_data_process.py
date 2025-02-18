@@ -243,7 +243,7 @@ class FwlDataProcess(object):
         if self.seg_status == self.const['MSG_COMPLETE']['true']:
             if self.status_recv == self.const['STATUS']['ok']:
                 self.send_obj.fwl_send_data_data_check(msg_type + 2, self.zid, self.const['STATUS']['ok'], 0)
-                logging.info("Message OK! Sensor ID: {} Num Pack: {}\n".format(self.zid, self.msg_cnt - 1))
+                logging.info("Message OK! Sensor ID: {} Num Pack: {}".format(self.zid, self.msg_cnt - 1))
                 try:
                     self.sensor_data = self.format_data(self.sensor_data)
                     if msg_type == self.const['RF_CMD']['data_seg_vib']:
@@ -265,7 +265,7 @@ class FwlDataProcess(object):
                 self.transmission_status = self.const['TRANSMISSION_MODE']['retransmission']
                 if len(self.vet_seg_error) > 0:
                     if self.print_msg_ret:
-                        self.send_obj.print_message("|\n| Retransmission Required! \n| Missing Packages: ", self.vet_seg_error)
+                        self.send_obj.print_message("| Retransmission Required! \n| Missing Packages: ", self.vet_seg_error)
                         dashboard.PubLog().send_num_retries(sensors_id_dict.get_pid_str(self.zid), len(self.vet_seg_error))
                         self.print_msg_ret = False
                     self.send_obj.fwl_send_data_data_check(msg_type + 2, self.zid, self.const['STATUS']['error'], self.vet_seg_error[self.index_vet_error])

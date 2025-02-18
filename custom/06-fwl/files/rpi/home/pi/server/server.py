@@ -205,7 +205,7 @@ class Server(object):
 
 
 if __name__ == '__main__':
-    logging.info("Starting Server Manager ...\n\n")
+    logging.info("Starting Server Manager ...")
     
     bridge_graph.bridge_init()
 

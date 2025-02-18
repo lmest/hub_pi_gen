@@ -132,11 +132,11 @@ class IpConfig:
         
         if self.send_new_data():
             logging.info("Send data status: Success")
-            logging.info("Next update in {} sec\n".format(self.sleep_next_update_sec))
+            logging.info("Next update in {} sec".format(self.sleep_next_update_sec))
             time.sleep(self.sleep_next_update_sec) 
         else:
             logging.warning("Send data status: Error") 
-            logging.warning("Next try in {} sec\n".format(self.sleep_next_try_sec))
+            logging.warning("Next try in {} sec".format(self.sleep_next_try_sec))
             time.sleep(self.sleep_next_try_sec)              
     
     def run(self):
@@ -146,7 +146,7 @@ class IpConfig:
                 
 
 if __name__ == '__main__':
-    logging.info("Starting automatic IP configurator\n")
+    logging.info("Starting automatic IP configurator")
     ipconfig = IpConfig()
     try:
         ipconfig.run()

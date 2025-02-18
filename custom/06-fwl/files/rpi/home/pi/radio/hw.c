@@ -151,7 +151,7 @@ int rpi_open_spi(int rate)
 	rpi_handle = spiOpen(0,rate,0);//256000,0);
 	if (rpi_handle >= 0)
 	{
-		printf("| Status: SPI open succesfully!\n|\n");
+		printf("| Status: SPI open succesfully!\n");
 	}
 	
 	return rpi_handle;
