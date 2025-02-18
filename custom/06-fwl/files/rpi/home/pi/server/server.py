@@ -136,7 +136,6 @@ class Server(object):
             logging.warning("Msg Received: {}".format(self.msg_received))
         else:
             sensors_id_dict.add_list_sensor(self.sensor_zid, pid)                        
-            print("")
             logging.info("Beacon Global Received | ID:{} | ZID: {}".format(sensors_id_dict.get_pid_str(self.sensor_zid), self.sensor_zid))
             logging.info("Vib X rms: {} | Vib X max: {} || Vib Z rms: {} | Vib Z max: {}".format(vib_x_rms, vib_x_max, vib_z_rms, vib_z_max))
             logging.info("Temperature: {} | Battery: {} | Ed: {}".format(float(temp/10**4), float(bat/10**4), ed))
@@ -187,12 +186,11 @@ class Server(object):
             
             
     def receive_loop(self):
-
         while True:
             try:
                 self.msg_received = self.send_data.receive_zmq()
             except Exception as e:
-                logging.warning(e)
+                logging.warning("receive_loop error" + str(e))
             else:
                 self.cmd = self.msg_received[0]
                 

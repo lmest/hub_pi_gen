@@ -91,7 +91,7 @@ rf_send_status_t rf_app_tx_data(uint8_t *buffer, uint8_t size, uint16_t pan_id_a
 	//rf_hw_disable_irq();
 	rf_send_status_t status = PHY_DataReq(buffer, size, pan_id_addr, dst_addr, app_retransmission);
 	rf_hw_enable_irq();
-	printf("Send Addr = %d | Sequence = %d | size = %hhu | pan_id = %hu\n", dst_addr, PHY_GetNextSeqNumber(true),size,pan_id_addr);
+	printf("| Send Addr = %d | Sequence = %d | size = %hhu | pan_id = %hu\n", dst_addr, PHY_GetNextSeqNumber(true),size,pan_id_addr);
     return status;
 }
 

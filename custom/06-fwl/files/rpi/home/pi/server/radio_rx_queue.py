@@ -27,12 +27,12 @@ class RadioRxQueue(object):
 
     def put_data_queue(self, sensor_id):
         self.q.put(sensor_id)
-        logging.info("Adding sensor in Queue")
+        logging.info(f"Adding sensor in Queue (ID = {sensor_id})")
         self.print_current_queue()            
 
     def remove_data_queue(self):
         self.q.get_nowait()
-        logging.info("Removing sensor from Queue")
+        logging.info(f"Removing sensor from Queue (ID = {sensor_id})")
         self.print_current_queue()            
 
     def get_data_queue(self, sensor_id):

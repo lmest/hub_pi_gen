@@ -45,7 +45,7 @@ void app_cmng_get_in_msg2send_cbf(msg2send_t* buffer_in)
     cbf_get(&cbf_in, &buffer_in->msg_num);
     cbf_get(&cbf_in, &buffer_in->size);
 
-    printf("| Msg to Send: ZID[%u] - MSG_NUM[%u] - SIZE[%u]\n", buffer_in->zid, buffer_in->msg_num, buffer_in->size);
+    printf("| Msg to Send: ZID[%u] - MSG_NUM[%u] - SIZE[%u]\n| ", buffer_in->zid, buffer_in->msg_num, buffer_in->size);
 
     for (uint8_t msg_pos = 0; msg_pos < (buffer_in->size); msg_pos++)
     {

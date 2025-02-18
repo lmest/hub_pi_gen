@@ -110,6 +110,7 @@ class RadioTx():
         if time2wait > 255:
             time2wait = 255
             logging.info("Time to wait {} exceed 255".format(time2wait))
+        logging.info(f"Sensor {zid} will wait {time2wait}s")
             
         msg_data_request = struct.pack("<BBBBBB12BHBBBBB", self.const['C_CMD']['message_to_send'], zid, self.msg_num, self.const['SIZE_MSG']['full'], self.const['RF_CMD']['data_req'],
                                         time2wait, *struct.pack('<12B', *sensors_id_dict.get_pid(zid)),

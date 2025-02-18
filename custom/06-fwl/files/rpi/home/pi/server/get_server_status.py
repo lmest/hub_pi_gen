@@ -18,7 +18,7 @@ class Get_ServerStatus():
         self.config_ini = ConfigIni()
         
     def set_reply_status(self):
-        logging.warning("Radio sync message receivend, resetting Connection Status")
+        logging.warning("Radio sync message received, resetting Connection Status")
         self.reply_status = True    
         
     def check_reply_status(self):
